@@ -1,0 +1,23 @@
+<h1>Woah, Hey, Find a Flight, Man</h1>
+<div>
+<%= form_with url: '/flights', method: 'get', local: true do |f| %>
+<%= f.label :flight_from_airport_id, 'From' %>
+<%= collection_select(:flight, :from_airport_id, Airport.all, :id, :code, selected: params[:flight][:from_airport_id]) %>
+<%= f.label :flight_to_airport_id, 'To' %>
+<%= collection_select(:flight, :to_airport_id, Airport.all, :id, :code, selected: params[:flight][:to_airport_id]) %>
+<%= f.label :flight_start, 'When' %>
+<%= select(:flight, :start, @start_options, selected: [DateTime.parse(params[:flight][:start]).strftime('%m/%d/%Y'), params[:flight][:start]]) %>
+<%= f.submit 'Search' %>
+<% end %>
+</div>
+<div>
+  <% if !@flights.nil? %>
+    <% if !@flights.empty? %>
+      <% @flights.each do |f| %>
+        <p><%= "From: #{Airport.find(f.from_airport_id).code}, To: #{Airport.find(f.to_airport_id).code}, At: #{f.start}, Duration: #{f.duration}" %></p>
+      <% end %>
+    <% else %>
+      <p>No flights available. Try another search. (Only have between SFO and NYC for this project)</p>
+    <% end %>
+  <% end %>
+</div>
