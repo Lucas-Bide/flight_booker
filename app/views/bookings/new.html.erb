@@ -1,0 +1,22 @@
+<h1>Confirm Booking</h1>
+
+<p><%= "From: #{@flight.from_airport.code}, To: #{@flight.to_airport.code}, On: #{@flight.start.to_s}" %></p>
+<div>
+<%= form_with url: '/bookings', method: 'post', model: @booking, local: true do |f| %>
+  <%= hidden_field_tag :flight, params[:flight] %>
+  <h5>Passengers</h5>
+  <ul>
+    <%= f.fields_for :passengers do |pf| %>
+      <li>
+        <%= pf.label :name %>
+        <%= pf.text_field :name %>
+        <%= pf.label :email %>
+        <%= pf.text_field :email %>
+        <%= pf.check_box :_destroy %>
+        <%= pf.label :_destroy, 'Discard Entry' %>
+      </li><br/>
+    <% end %>
+  </ul>
+  <%= f.submit 'Book Flight' %>
+<% end %>
+</div>

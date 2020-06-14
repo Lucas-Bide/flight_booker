@@ -1,20 +1,28 @@
 <h1>Woah, Hey, Find a Flight, Man</h1>
 <div>
 <%= form_with url: '/flights', method: 'get', local: true do |f| %>
-<%= f.label :flight_from_airport_id, 'From' %>
-<%= collection_select(:flight, :from_airport_id, Airport.all, :id, :code, selected: params[:flight][:from_airport_id]) %>
-<%= f.label :flight_to_airport_id, 'To' %>
-<%= collection_select(:flight, :to_airport_id, Airport.all, :id, :code, selected: params[:flight][:to_airport_id]) %>
-<%= f.label :flight_start, 'When' %>
-<%= select(:flight, :start, @start_options, selected: [DateTime.parse(params[:flight][:start]).strftime('%m/%d/%Y'), params[:flight][:start]]) %>
-<%= f.submit 'Search' %>
+  <%= f.label :flight_from_airport_id, 'From' %>
+  <%= collection_select(:flight, :from_airport_id, Airport.all, :id, :code, selected: :selected_airport_value) %>
+  <%= f.label :flight_to_airport_id, 'To' %>
+  <%= collection_select(:flight, :to_airport_id, Airport.all, :id, :code, selected: :selected_airport_value) %>
+  <%= f.label :flight_start, 'When' %>
+  <%= select(:flight, :start, @start_options, selected: :selected_start_value) %>
+  <%= f.submit 'Search' %>
 <% end %>
 </div>
+<br/>
 <div>
   <% if !@flights.nil? %>
     <% if !@flights.empty? %>
-      <% @flights.each do |f| %>
-        <p><%= "From: #{Airport.find(f.from_airport_id).code}, To: #{Airport.find(f.to_airport_id).code}, At: #{f.start}, Duration: #{f.duration}" %></p>
+      <%= form_with url: '/bookings/new', method: 'get', local: true do |form| %>
+        <%= hidden_field_tag :passengers, 3 %>
+        <% @flights.each do |f| %>
+          <%= radio_button_tag(:flight, f.id.to_s) %>
+          <%= label "flight_#{f.id}".to_sym, "From: #{Airport.find(f.from_airport_id).code}, To: #{Airport.find(f.to_airport_id).code}, At: #{f.start}, Duration: #{f.duration}" %>
+          <br/>
+        <% end %>
+        <br/>
+        <%= form.submit "Book Flight" %>
       <% end %>
     <% else %>
       <p>No flights available. Try another search. (Only have between SFO and NYC for this project)</p>

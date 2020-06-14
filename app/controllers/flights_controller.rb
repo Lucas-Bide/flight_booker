@@ -9,10 +9,4 @@ class FlightsController < ApplicationController
       @flights.each { |f| p f.start.to_s }
     end
   end
-  
-  private
-
-  def flight_params
-    params.require(:flight).permit(:from_airport_id, :to_airport_id, :start)
-  end
 end

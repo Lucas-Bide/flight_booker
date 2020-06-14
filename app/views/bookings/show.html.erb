@@ -1,0 +1,12 @@
+<h1>Your Booking</h1>
+
+<p><%= "From: #{@booking.flight.from_airport.code}, To: #{@booking.flight.to_airport.code}, On: #{@booking.flight.start.to_s}" %></p>
+<h5>Passengers</h5>
+<div>
+  <ul>
+    <% @booking.passengers.each do |pass| %>
+      <li><%= "Name: #{pass.name}, Email: #{pass.email}" %></li>
+    <% end %>
+  </ul>
+</div>
+<%= link_to 'Book Another Flight', flights_path %>
