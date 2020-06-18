@@ -2,11 +2,11 @@
 <div>
 <%= form_with url: '/flights', method: 'get', local: true do |f| %>
   <%= f.label :flight_from_airport_id, 'From' %>
-  <%= collection_select(:flight, :from_airport_id, Airport.all, :id, :code, selected: :selected_airport_value) %>
+  <%= collection_select(:flight, :from_airport_id, Airport.all, :id, :code, selected: selected_from_airport_value) %>
   <%= f.label :flight_to_airport_id, 'To' %>
-  <%= collection_select(:flight, :to_airport_id, Airport.all, :id, :code, selected: :selected_airport_value) %>
+  <%= collection_select(:flight, :to_airport_id, Airport.all, :id, :code, selected: selected_to_airport_value) %>
   <%= f.label :flight_start, 'When' %>
-  <%= select(:flight, :start, @start_options, selected: :selected_start_value) %>
+  <%= select(:flight, :start, @start_options, selected: selected_start_value) %>
   <%= f.submit 'Search' %>
 <% end %>
 </div>

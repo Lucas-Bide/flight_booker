@@ -1,10 +1,18 @@
 module FlightsHelper
 
-  def selected_airport_value
+  def selected_from_airport_value
+    if params[:flight]
+      params[:flight][:from_airport_id]
+    else
+      Airport.first.id
+    end
+  end
+  
+  def selected_to_airport_value
     if params[:flight]
       params[:flight][:to_airport_id]
     else
-      Airport.first.id
+      Airport.second.id
     end
   end
 

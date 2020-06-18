@@ -11,6 +11,7 @@ class BookingsController < ApplicationController
     @flight = Flight.find(params[:flight])
     @booking = @flight.build_booking(booking_params)
     if @booking.save
+      @booking.passengers.each { |pa| PassengerMailer.with(passenger: pa).thank_you.deliver_later }
       redirect_to @booking
     else
       render 'new'
